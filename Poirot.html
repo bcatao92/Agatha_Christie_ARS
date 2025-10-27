@@ -1,0 +1,155 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 1000px;
+                 height: 700px;
+                 background-color: #222222;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#97c2fc", "font": {"color": "white"}, "id": "Esther Walters", "label": "Esther Walters", "shape": "dot", "size": 13}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Prescott", "label": "Prescott", "shape": "dot", "size": 15}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Rafiel", "label": "Rafiel", "shape": "dot", "size": 23}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Chichester", "label": "Chichester", "shape": "dot", "size": 2}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Jackson", "label": "Jackson", "shape": "dot", "size": 16}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Hillingdon", "label": "Hillingdon", "shape": "dot", "size": 17}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Dyson", "label": "Dyson", "shape": "dot", "size": 12}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Major Palgrave", "label": "Major Palgrave", "shape": "dot", "size": 14}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Palgrave", "label": "Palgrave", "shape": "dot", "size": 17}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Evelyn Hillingdon", "label": "Evelyn Hillingdon", "shape": "dot", "size": 16}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Se\u00f1ora de Caspearo", "label": "Se\u00f1ora de Caspearo", "shape": "dot", "size": 11}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Molly Kendal", "label": "Molly Kendal", "shape": "dot", "size": 7}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Graham", "label": "Graham", "shape": "dot", "size": 18}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Tim Kendal", "label": "Tim Kendal", "shape": "dot", "size": 13}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Victoria Johnson", "label": "Victoria Johnson", "shape": "dot", "size": 5}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Kendal", "label": "Kendal", "shape": "dot", "size": 14}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Jane", "label": "Jane", "shape": "dot", "size": 1}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "French", "label": "French", "shape": "dot", "size": 4}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Daventry", "label": "Daventry", "shape": "dot", "size": 8}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Raymond", "label": "Raymond", "shape": "dot", "size": 5}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Joe Arden", "label": "Joe Arden", "shape": "dot", "size": 2}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Edward Hillingdon", "label": "Edward Hillingdon", "shape": "dot", "size": 8}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Walters", "label": "Walters", "shape": "dot", "size": 6}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Jane Marple", "label": "Jane Marple", "shape": "dot", "size": 4}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Raymond West", "label": "Raymond West", "shape": "dot", "size": 2}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "General Leroy", "label": "General Leroy", "shape": "dot", "size": 2}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Arthur Jackson", "label": "Arthur Jackson", "shape": "dot", "size": 6}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Robertson", "label": "Robertson", "shape": "dot", "size": 6}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Weston", "label": "Weston", "shape": "dot", "size": 9}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Diana Horrocks", "label": "Diana Horrocks", "shape": "dot", "size": 1}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Hercule Poirot", "label": "Hercule Poirot", "shape": "dot", "size": 3}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Tuppence Beresford", "label": "Tuppence Beresford", "shape": "dot", "size": 2}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Lucky Dyson", "label": "Lucky Dyson", "shape": "dot", "size": 5}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Fernando", "label": "Fernando", "shape": "dot", "size": 3}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Greg Dyson", "label": "Greg Dyson", "shape": "dot", "size": 3}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Harper", "label": "Harper", "shape": "dot", "size": 1}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Smith", "label": "Smith", "shape": "dot", "size": 1}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Jonas Parry", "label": "Jonas Parry", "shape": "dot", "size": 3}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Joan Prescott", "label": "Joan Prescott", "shape": "dot", "size": 2}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Henry Clithering", "label": "Henry Clithering", "shape": "dot", "size": 1}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Linnett", "label": "Linnett", "shape": "dot", "size": 1}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Jones", "label": "Jones", "shape": "dot", "size": 1}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Robinson", "label": "Robinson", "shape": "dot", "size": 1}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Leslie James", "label": "Leslie James", "shape": "dot", "size": 2}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Murdoch", "label": "Murdoch", "shape": "dot", "size": 2}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Lady Caroline Wolfe", "label": "Lady Caroline Wolfe", "shape": "dot", "size": 2}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Enrico", "label": "Enrico", "shape": "dot", "size": 2}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Wicklow", "label": "Wicklow", "shape": "dot", "size": 2}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Richardson", "label": "Richardson", "shape": "dot", "size": 2}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "George Trollope", "label": "George Trollope", "shape": "dot", "size": 2}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Big Jim Ellis", "label": "Big Jim Ellis", "shape": "dot", "size": 1}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Japp", "label": "Japp", "shape": "dot", "size": 2}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Poirot", "label": "Poirot", "shape": "dot", "size": 1}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Superintendent Battle", "label": "Superintendent Battle", "shape": "dot", "size": 2}]);
+                  edges = new vis.DataSet([{"from": "Esther Walters", "to": "Prescott", "valor": 7, "width": 1}, {"from": "Esther Walters", "to": "Rafiel", "valor": 148, "width": 1}, {"from": "Esther Walters", "to": "Chichester", "valor": 2, "width": 1}, {"from": "Esther Walters", "to": "Jackson", "valor": 45, "width": 1}, {"from": "Esther Walters", "to": "Hillingdon", "valor": 7, "width": 1}, {"from": "Esther Walters", "to": "Dyson", "valor": 14, "width": 1}, {"from": "Esther Walters", "to": "Major Palgrave", "valor": 13, "width": 1}, {"from": "Esther Walters", "to": "Palgrave", "valor": 5, "width": 1}, {"from": "Esther Walters", "to": "Evelyn Hillingdon", "valor": 6, "width": 1}, {"from": "Esther Walters", "to": "Se\u00f1ora de Caspearo", "valor": 5, "width": 1}, {"from": "Esther Walters", "to": "Molly Kendal", "valor": 14, "width": 1}, {"from": "Esther Walters", "to": "Graham", "valor": 6, "width": 1}, {"from": "Esther Walters", "to": "Tim Kendal", "valor": 20, "width": 1}, {"from": "Prescott", "to": "Victoria Johnson", "valor": 3, "width": 1}, {"from": "Prescott", "to": "Kendal", "valor": 2, "width": 1}, {"from": "Prescott", "to": "Rafiel", "valor": 1, "width": 1}, {"from": "Prescott", "to": "Hillingdon", "valor": 14, "width": 1}, {"from": "Prescott", "to": "Major Palgrave", "valor": 19, "width": 1}, {"from": "Prescott", "to": "Dyson", "valor": 15, "width": 1}, {"from": "Prescott", "to": "Graham", "valor": 2, "width": 1}, {"from": "Prescott", "to": "Palgrave", "valor": 4, "width": 1}, {"from": "Prescott", "to": "Jane", "valor": 3, "width": 1}, {"from": "Prescott", "to": "French", "valor": 7, "width": 1}, {"from": "Prescott", "to": "Tim Kendal", "valor": 6, "width": 1}, {"from": "Prescott", "to": "Evelyn Hillingdon", "valor": 11, "width": 1}, {"from": "Prescott", "to": "Se\u00f1ora de Caspearo", "valor": 4, "width": 1}, {"from": "Prescott", "to": "Jackson", "valor": 3, "width": 1}, {"from": "Victoria Johnson", "to": "Graham", "valor": 5, "width": 1}, {"from": "Victoria Johnson", "to": "Kendal", "valor": 11, "width": 1}, {"from": "Victoria Johnson", "to": "Palgrave", "valor": 1, "width": 1}, {"from": "Victoria Johnson", "to": "Daventry", "valor": 5, "width": 1}, {"from": "Major Palgrave", "to": "Palgrave", "valor": 19, "width": 1}, {"from": "Major Palgrave", "to": "Raymond", "valor": 3, "width": 1}, {"from": "Major Palgrave", "to": "Joe Arden", "valor": 3, "width": 1}, {"from": "Major Palgrave", "to": "Edward Hillingdon", "valor": 3, "width": 1}, {"from": "Major Palgrave", "to": "Graham", "valor": 20, "width": 1}, {"from": "Major Palgrave", "to": "Hillingdon", "valor": 5, "width": 1}, {"from": "Major Palgrave", "to": "Rafiel", "valor": 31, "width": 1}, {"from": "Major Palgrave", "to": "Walters", "valor": 3, "width": 1}, {"from": "Major Palgrave", "to": "Dyson", "valor": 2, "width": 1}, {"from": "Major Palgrave", "to": "Evelyn Hillingdon", "valor": 3, "width": 1}, {"from": "Major Palgrave", "to": "Jackson", "valor": 2, "width": 1}, {"from": "Major Palgrave", "to": "Se\u00f1ora de Caspearo", "valor": 3, "width": 1}, {"from": "Palgrave", "to": "Jane Marple", "valor": 1, "width": 1}, {"from": "Palgrave", "to": "Raymond West", "valor": 5, "width": 1}, {"from": "Palgrave", "to": "Rafiel", "valor": 32, "width": 1}, {"from": "Palgrave", "to": "Hillingdon", "valor": 9, "width": 1}, {"from": "Palgrave", "to": "Tim Kendal", "valor": 8, "width": 1}, {"from": "Palgrave", "to": "General Leroy", "valor": 6, "width": 1}, {"from": "Palgrave", "to": "Graham", "valor": 34, "width": 1}, {"from": "Palgrave", "to": "Jackson", "valor": 16, "width": 1}, {"from": "Palgrave", "to": "Arthur Jackson", "valor": 17, "width": 1}, {"from": "Palgrave", "to": "Dyson", "valor": 10, "width": 1}, {"from": "Palgrave", "to": "Robertson", "valor": 4, "width": 1}, {"from": "Palgrave", "to": "Daventry", "valor": 3, "width": 1}, {"from": "Palgrave", "to": "Weston", "valor": 3, "width": 1}, {"from": "Raymond", "to": "Jane Marple", "valor": 5, "width": 1}, {"from": "Raymond", "to": "Raymond West", "valor": 4, "width": 1}, {"from": "Raymond", "to": "Diana Horrocks", "valor": 1, "width": 1}, {"from": "Raymond", "to": "Molly Kendal", "valor": 3, "width": 1}, {"from": "Jane Marple", "to": "Hercule Poirot", "valor": 5, "width": 1}, {"from": "Jane Marple", "to": "Tuppence Beresford", "valor": 5, "width": 1}, {"from": "Molly Kendal", "to": "Tim Kendal", "valor": 15, "width": 1}, {"from": "Molly Kendal", "to": "Dyson", "valor": 3, "width": 1}, {"from": "Molly Kendal", "to": "Jackson", "valor": 5, "width": 1}, {"from": "Molly Kendal", "to": "Walters", "valor": 2, "width": 1}, {"from": "Molly Kendal", "to": "Lucky Dyson", "valor": 5, "width": 1}, {"from": "Tim Kendal", "to": "Rafiel", "valor": 30, "width": 1}, {"from": "Tim Kendal", "to": "Lucky Dyson", "valor": 4, "width": 1}, {"from": "Tim Kendal", "to": "French", "valor": 6, "width": 1}, {"from": "Tim Kendal", "to": "Robertson", "valor": 2, "width": 1}, {"from": "Tim Kendal", "to": "Graham", "valor": 2, "width": 1}, {"from": "Tim Kendal", "to": "Fernando", "valor": 4, "width": 1}, {"from": "Tim Kendal", "to": "Jackson", "valor": 16, "width": 1}, {"from": "Tim Kendal", "to": "Evelyn Hillingdon", "valor": 7, "width": 1}, {"from": "Tim Kendal", "to": "Greg Dyson", "valor": 4, "width": 1}, {"from": "Rafiel", "to": "Graham", "valor": 10, "width": 1}, {"from": "Rafiel", "to": "Evelyn Hillingdon", "valor": 17, "width": 1}, {"from": "Rafiel", "to": "Edward Hillingdon", "valor": 11, "width": 1}, {"from": "Rafiel", "to": "Chichester", "valor": 5, "width": 1}, {"from": "Rafiel", "to": "Jackson", "valor": 190, "width": 1}, {"from": "Rafiel", "to": "Harper", "valor": 3, "width": 1}, {"from": "Rafiel", "to": "Walters", "valor": 74, "width": 1}, {"from": "Rafiel", "to": "Dyson", "valor": 3, "width": 1}, {"from": "Rafiel", "to": "Se\u00f1ora de Caspearo", "valor": 21, "width": 1}, {"from": "Rafiel", "to": "Hillingdon", "valor": 10, "width": 1}, {"from": "Rafiel", "to": "Kendal", "valor": 1, "width": 1}, {"from": "Rafiel", "to": "Daventry", "valor": 1, "width": 1}, {"from": "Rafiel", "to": "Smith", "valor": 8, "width": 1}, {"from": "Rafiel", "to": "Jonas Parry", "valor": 4, "width": 1}, {"from": "Rafiel", "to": "Arthur Jackson", "valor": 11, "width": 1}, {"from": "Rafiel", "to": "Joan Prescott", "valor": 2, "width": 1}, {"from": "Rafiel", "to": "Lucky Dyson", "valor": 5, "width": 1}, {"from": "Rafiel", "to": "Greg Dyson", "valor": 2, "width": 1}, {"from": "Graham", "to": "Hillingdon", "valor": 20, "width": 1}, {"from": "Graham", "to": "Arthur Jackson", "valor": 5, "width": 1}, {"from": "Graham", "to": "Robertson", "valor": 15, "width": 1}, {"from": "Graham", "to": "Walters", "valor": 3, "width": 1}, {"from": "Graham", "to": "Daventry", "valor": 17, "width": 1}, {"from": "Graham", "to": "Kendal", "valor": 11, "width": 1}, {"from": "Graham", "to": "Henry Clithering", "valor": 4, "width": 1}, {"from": "Graham", "to": "Edward Hillingdon", "valor": 9, "width": 1}, {"from": "Graham", "to": "Evelyn Hillingdon", "valor": 7, "width": 1}, {"from": "Graham", "to": "Jackson", "valor": 3, "width": 1}, {"from": "Graham", "to": "Dyson", "valor": 3, "width": 1}, {"from": "Joe Arden", "to": "Linnett", "valor": 5, "width": 1}, {"from": "Jones", "to": "Robinson", "valor": 6, "width": 1}, {"from": "Hillingdon", "to": "Lucky Dyson", "valor": 6, "width": 1}, {"from": "Hillingdon", "to": "Evelyn Hillingdon", "valor": 3, "width": 1}, {"from": "Hillingdon", "to": "Dyson", "valor": 34, "width": 1}, {"from": "Hillingdon", "to": "Leslie James", "valor": 5, "width": 1}, {"from": "Hillingdon", "to": "Se\u00f1ora de Caspearo", "valor": 5, "width": 1}, {"from": "Hillingdon", "to": "Weston", "valor": 9, "width": 1}, {"from": "Hillingdon", "to": "Daventry", "valor": 5, "width": 1}, {"from": "Hillingdon", "to": "Jackson", "valor": 6, "width": 1}, {"from": "Hillingdon", "to": "French", "valor": 4, "width": 1}, {"from": "Hillingdon", "to": "Edward Hillingdon", "valor": 11, "width": 1}, {"from": "Hillingdon", "to": "Kendal", "valor": 2, "width": 1}, {"from": "Lucky Dyson", "to": "Jackson", "valor": 2, "width": 1}, {"from": "Evelyn Hillingdon", "to": "Murdoch", "valor": 3, "width": 1}, {"from": "Evelyn Hillingdon", "to": "Lady Caroline Wolfe", "valor": 3, "width": 1}, {"from": "Evelyn Hillingdon", "to": "Kendal", "valor": 9, "width": 1}, {"from": "Evelyn Hillingdon", "to": "Se\u00f1ora de Caspearo", "valor": 7, "width": 1}, {"from": "Evelyn Hillingdon", "to": "Weston", "valor": 10, "width": 1}, {"from": "Evelyn Hillingdon", "to": "Daventry", "valor": 5, "width": 1}, {"from": "Evelyn Hillingdon", "to": "Edward Hillingdon", "valor": 6, "width": 1}, {"from": "Evelyn Hillingdon", "to": "Jackson", "valor": 2, "width": 1}, {"from": "Evelyn Hillingdon", "to": "Arthur Jackson", "valor": 3, "width": 1}, {"from": "Edward Hillingdon", "to": "Se\u00f1ora de Caspearo", "valor": 6, "width": 1}, {"from": "Edward Hillingdon", "to": "Jackson", "valor": 11, "width": 1}, {"from": "Edward Hillingdon", "to": "Dyson", "valor": 5, "width": 1}, {"from": "French", "to": "Se\u00f1ora de Caspearo", "valor": 5, "width": 1}, {"from": "Dyson", "to": "Se\u00f1ora de Caspearo", "valor": 7, "width": 1}, {"from": "Dyson", "to": "Weston", "valor": 14, "width": 1}, {"from": "Dyson", "to": "Kendal", "valor": 7, "width": 1}, {"from": "Kendal", "to": "Se\u00f1ora de Caspearo", "valor": 3, "width": 1}, {"from": "Kendal", "to": "Jackson", "valor": 18, "width": 1}, {"from": "Kendal", "to": "Weston", "valor": 37, "width": 1}, {"from": "Kendal", "to": "Robertson", "valor": 13, "width": 1}, {"from": "Kendal", "to": "Enrico", "valor": 1, "width": 1}, {"from": "Kendal", "to": "Daventry", "valor": 5, "width": 1}, {"from": "Kendal", "to": "Walters", "valor": 6, "width": 1}, {"from": "Jackson", "to": "Jonas Parry", "valor": 14, "width": 1}, {"from": "Jackson", "to": "Arthur Jackson", "valor": 6, "width": 1}, {"from": "Jackson", "to": "Walters", "valor": 14, "width": 1}, {"from": "General Leroy", "to": "Wicklow", "valor": 6, "width": 1}, {"from": "Wicklow", "to": "Richardson", "valor": 6, "width": 1}, {"from": "Richardson", "to": "George Trollope", "valor": 2, "width": 1}, {"from": "George Trollope", "to": "Murdoch", "valor": 6, "width": 1}, {"from": "Lady Caroline Wolfe", "to": "Leslie James", "valor": 5, "width": 1}, {"from": "Arthur Jackson", "to": "Jonas Parry", "valor": 6, "width": 1}, {"from": "Se\u00f1ora de Caspearo", "to": "Weston", "valor": 4, "width": 1}, {"from": "Robertson", "to": "Fernando", "valor": 3, "width": 1}, {"from": "Robertson", "to": "Weston", "valor": 6, "width": 1}, {"from": "Fernando", "to": "Enrico", "valor": 1, "width": 1}, {"from": "Daventry", "to": "Weston", "valor": 17, "width": 1}, {"from": "Weston", "to": "Big Jim Ellis", "valor": 10, "width": 1}, {"from": "Greg Dyson", "to": "Joan Prescott", "valor": 4, "width": 1}, {"from": "Hercule Poirot", "to": "Japp", "valor": 3, "width": 1}, {"from": "Hercule Poirot", "to": "Poirot", "valor": 5, "width": 1}, {"from": "Tuppence Beresford", "to": "Superintendent Battle", "valor": 6, "width": 1}, {"from": "Superintendent Battle", "to": "Japp", "valor": 6, "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
